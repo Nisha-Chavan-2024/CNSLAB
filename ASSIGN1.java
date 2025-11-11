@@ -171,9 +171,9 @@ public class ASSIGN1 {
                     System.out.println("Decrypted Text: " + new String(decrypted));
                 }
 
-                // -------------------- 5. Vernam Cipher (One-Time Pad Style) --------------------
+                // -------------------- 5. Vernam Cipher (XOR Based) --------------------
                 case 5 -> {
-                    System.out.println("===== Vernam Cipher (One-Time Pad Style) =====");
+                    System.out.println("===== Vernam Cipher (XOR Based) =====");
                     System.out.print("Enter Plaintext (UPPERCASE only): ");
                     String text5 = sc.nextLine().toUpperCase();
                     System.out.print("Enter Key (same length as text, UPPERCASE only): ");
@@ -185,38 +185,35 @@ public class ASSIGN1 {
                     }
 
                     // Encryption
-                    StringBuilder encryptedVernam = new StringBuilder();
+                    StringBuilder cipherVernam = new StringBuilder();
                     for (int i = 0; i < text5.length(); i++) {
-                        int ptVal = text5.charAt(i) - 'A';
-                        int keyVal = key5.charAt(i) - 'A';
-                        int xorVal = ptVal ^ keyVal;
-                        if (xorVal >= 26) xorVal -= 26;
-                        char cipherChar = (char) ('A' + xorVal);
-                        encryptedVernam.append(cipherChar);
+                        char enc = (char) (text5.charAt(i) ^ key5.charAt(i));
+                        cipherVernam.append(enc);
                     }
+
+                    // Display Cipher as Decimal
+                    System.out.print("Encrypted Text (Decimal Form): ");
+                    for (char c : cipherVernam.toString().toCharArray()) {
+                        System.out.print((int) c + " ");
+                    }
+                    System.out.println();
 
                     // Decryption
                     StringBuilder decryptedVernam = new StringBuilder();
-                    for (int i = 0; i < encryptedVernam.length(); i++) {
-                        int ctVal = encryptedVernam.charAt(i) - 'A';
-                        int keyVal = key5.charAt(i) - 'A';
-                        int decVal = ctVal ^ keyVal;
-                        if (decVal >= 26) decVal -= 26;
-                        char plainChar = (char) ('A' + decVal);
-                        decryptedVernam.append(plainChar);
+                    for (int i = 0; i < cipherVernam.length(); i++) {
+                        char dec = (char) (cipherVernam.charAt(i) ^ key5.charAt(i));
+                        decryptedVernam.append(dec);
                     }
 
-                    System.out.println("Encrypted Text: " + encryptedVernam);
                     System.out.println("Decrypted Text: " + decryptedVernam);
                 }
 
-                // -------------------- 6. One-Time Pad Cipher --------------------
+                // -------------------- 6. One-Time Pad Cipher (XOR Based) --------------------
                 case 6 -> {
-                    System.out.println("===== One-Time Pad Cipher =====");
+                    System.out.println("===== One-Time Pad Cipher (XOR Based) =====");
                     System.out.print("Enter Plaintext (UPPERCASE only): ");
                     String plaintext = sc.nextLine().toUpperCase();
 
-                    // Generate random key (same length)
                     Random rand = new Random();
                     StringBuilder key = new StringBuilder();
                     for (int i = 0; i < plaintext.length(); i++) {
@@ -224,26 +221,28 @@ public class ASSIGN1 {
                         key.append(randomChar);
                     }
 
-                    // Encryption
+                    // Encryption using XOR
                     StringBuilder cipher = new StringBuilder();
                     for (int i = 0; i < plaintext.length(); i++) {
-                        int ptVal = plaintext.charAt(i) - 'A';
-                        int keyVal = key.charAt(i) - 'A';
-                        int encVal = (ptVal + keyVal) % 26;
-                        cipher.append((char) ('A' + encVal));
+                        char enc = (char) (plaintext.charAt(i) ^ key.charAt(i));
+                        cipher.append(enc);
                     }
+
+                    // Display Cipher in Decimal
+                    System.out.print("Cipher (Decimal Form): ");
+                    for (char c : cipher.toString().toCharArray()) {
+                        System.out.print((int) c + " ");
+                    }
+                    System.out.println();
 
                     // Decryption
                     StringBuilder decrypted = new StringBuilder();
                     for (int i = 0; i < cipher.length(); i++) {
-                        int ctVal = cipher.charAt(i) - 'A';
-                        int keyVal = key.charAt(i) - 'A';
-                        int decVal = (ctVal - keyVal + 26) % 26;
-                        decrypted.append((char) ('A' + decVal));
+                        char dec = (char) (cipher.charAt(i) ^ key.charAt(i));
+                        decrypted.append(dec);
                     }
 
                     System.out.println("Random Key: " + key);
-                    System.out.println("Encrypted Text: " + cipher);
                     System.out.println("Decrypted Text: " + decrypted);
                 }
 
